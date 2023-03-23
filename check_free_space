@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+
+echo -e "\nHello from task 1"
+if [[ $1 -gt 0 ]]
+then
+    threshold=$1
+else
+    threshold=99999
+fi
+echo "The threshold is: $threshold Bytes"
+
+# df: to see the disk space
+# -h: for make easy to read output
+# /: the root of the file system
+
+#freespace=$(df -h / | awk 'NR==2 {print $4}')
+freespace=$(df -k --output=avail "/" | tail -n1)
+freespaceGB=$(($freespace/1048576))
+freemem=$(free -h | awk 'NR==2 {print $4}')
+
+echo -e "System report for $HOSTNAME"
+printf "\tFree disk space: \t%s Bytes (%s GB)\n" "$freespace" "$freespaceGB"
+
+
+timeout=3
+
+while ((freespace>0)); do
+    sleep $timeout
+    
+    if((threshold > freespace))
+    then
+        echo "The free space ($freespace ) drops below the given threshold ($threshold)"
+    else
+        echo "Free space: $freespace Bytes -- Threshold: $threshold Bytes"
+    fi
+    
+    freespace=$(df -k --output=avail "/" | tail -n1)
+done
+

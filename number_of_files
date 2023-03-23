@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+read -p "Please type the directory to look at: " directory
+find $directory -type f | wc -l

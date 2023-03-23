@@ -1,0 +1,7 @@
+ if((threshold > freespace))
+    then
+        echo "The free space drops below the given threshold!"
+        #else
+        # echo "running..."
+    fi
+    asdjf
